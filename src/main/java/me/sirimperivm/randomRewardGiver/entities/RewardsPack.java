@@ -170,7 +170,7 @@ public class RewardsPack {
                     Reward reward = rewards.get(rand.nextInt(rewards.size()));
                     do {
                         reward = rewards.get(rand.nextInt(rewards.size()));
-                    } while (!lastReward.equals(null) && lastReward == reward);
+                    } while (lastReward == reward);
                     lastReward = reward;
 
                     reward.giveToPlayer(p, inventoryFullMessage);
