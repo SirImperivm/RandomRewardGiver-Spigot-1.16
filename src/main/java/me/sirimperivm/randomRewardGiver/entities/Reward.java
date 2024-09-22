@@ -1,5 +1,6 @@
 package me.sirimperivm.randomRewardGiver.entities;
 
+import me.sirimperivm.randomRewardGiver.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -14,12 +15,14 @@ public class Reward {
     private String title;
     private List<ItemStack> items;
     private List<String> commands;
+    private List<String> messages;
 
-    public Reward(String rewardIdentifier, String title, List<ItemStack> items, List<String> commands) {
+    public Reward(String rewardIdentifier, String title, List<ItemStack> items, List<String> commands, List<String> messages) {
         this.rewardIdentifier = rewardIdentifier;
         this.title = title;
         this.items = items;
         this.commands = commands;
+        this.messages = messages;
     }
 
     public String getRewardIdentifier() {
@@ -54,12 +57,29 @@ public class Reward {
         this.commands = commands;
     }
 
+    public List<String> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
+    }
+
     public void giveToPlayer(Player p, String inventoryFullMessage) {
         String playerName = p.getName();
 
         for (String command : commands) {
             command = command.replace("%player%", playerName);
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
+
+        for (String message : messages) {
+            message = message
+                    .replace("%player%", playerName)
+                    .replace("%reward-tag%", rewardIdentifier)
+                    .replace("%reward-title%", Colors.translateString(title))
+            ;
+            p.sendMessage(Colors.translateString(message));
         }
 
         boolean inventoryFull = false;

@@ -55,6 +55,7 @@ public class RewardsPack {
             String rewardPath = path + ".rewards." + rewardSection;
             String rewardTitle = configManager.getTranslatedString(configManager.getRewards(), rewardPath + ".title");
             List<String> rewardCommands = configManager.getRewards().getStringList(rewardPath + ".commands");
+            List<String> rewardMessages = configManager.getRewards().getStringList(rewardPath + ".messages");
             List<ItemStack> rewardItems = new ArrayList<>();
             for (String itemSection : configManager.getRewards().getConfigurationSection(rewardPath + ".items").getKeys(false)) {
                 String itemPath = rewardPath + ".items." + itemSection;
@@ -149,7 +150,7 @@ public class RewardsPack {
                     rewardItems.add(is);
                 }
             }
-            Reward reward = new Reward(rewardSection, rewardTitle, rewardItems, rewardCommands);
+            Reward reward = new Reward(rewardSection, rewardTitle, rewardItems, rewardCommands, rewardMessages);
             rewards.add(reward);
         }
     }
