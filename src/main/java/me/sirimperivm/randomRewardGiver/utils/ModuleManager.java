@@ -1,10 +1,12 @@
 package me.sirimperivm.randomRewardGiver.utils;
 
 import me.sirimperivm.randomRewardGiver.Main;
+import me.sirimperivm.randomRewardGiver.entities.RewardsPack;
 import me.sirimperivm.randomRewardGiver.utils.colors.Colors;
 import me.sirimperivm.randomRewardGiver.utils.others.Logger;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("all")
@@ -15,11 +17,36 @@ public class ModuleManager {
     private Logger log;
     private ConfigManager configManager;
 
+    private List<RewardsPack> rewardsPacks;
+
     public ModuleManager(Main plugin) {
         this.plugin = plugin;
         colors = plugin.getColors();
         log = plugin.getLog();
         configManager = plugin.getConfigManager();
+
+        resetRewardsPacks();
+    }
+
+    public void resetRewardsPacks() {
+        rewardsPacks = new ArrayList<>();
+        for (String rewardPackSection : configManager.getRewards().getConfigurationSection("packs").getKeys(false)) {
+            String path = "packs." + rewardPackSection;
+            RewardsPack rewardsPack = new RewardsPack(configManager, rewardPackSection);
+            rewardsPack.resetTitle();
+            rewardsPack.resetSize();
+            rewardsPack.resetRewards();
+            rewardsPacks.add(rewardsPack);
+        }
+    }
+
+    public void getHelp(CommandSender s, String helpTarget, String pageTarget) {
+        if (!containsOnlyNumbers(pageTarget)) {
+            s.sendMessage(configManager.getTranslatedString(configManager.getMessages(), "invalid-args.number-required"));
+            return;
+        }
+        int page = Integer.parseInt(pageTarget);
+        createHelp(s, helpTarget, page);
     }
 
     public void createHelp(CommandSender s, String helpTarget, int page) {
@@ -34,7 +61,7 @@ public class ModuleManager {
 
         if (visualizedPage <= 0 || visualizedPage > (int) Math.floor((double) totalCommands/commandsPerPage)+1) {
             s.sendMessage(configManager.getTranslatedString(configManager.getMessages(),"page-not-found")
-                    .replace("{page}", String.valueOf(visualizedPage))
+                    .replace("%page%", String.valueOf(visualizedPage))
             );
             return;
         }
@@ -51,8 +78,8 @@ public class ModuleManager {
                     String commandName = parts[0].trim();
                     String commandDescription = parts[1].trim();
                     s.sendMessage(configManager.getTranslatedString(configManager.getMessages(),"helps-creator." + helpTarget + ".line-format")
-                            .replace("{command-name}", colors.translatedString(commandName))
-                            .replace("{command-description}", colors.translatedString(commandDescription))
+                            .replace("%command-name%", colors.translatedString(commandName))
+                            .replace("%command-description%", colors.translatedString(commandDescription))
                     );
                 }
             }
@@ -72,5 +99,9 @@ public class ModuleManager {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public List<RewardsPack> getRewardsPacks() {
+        return rewardsPacks;
     }
 }

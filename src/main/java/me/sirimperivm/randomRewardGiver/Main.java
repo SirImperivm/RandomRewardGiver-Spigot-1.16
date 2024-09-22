@@ -1,5 +1,6 @@
 package me.sirimperivm.randomRewardGiver;
 
+import me.sirimperivm.randomRewardGiver.commands.AdminCommand;
 import me.sirimperivm.randomRewardGiver.utils.ConfigManager;
 import me.sirimperivm.randomRewardGiver.utils.ModuleManager;
 import me.sirimperivm.randomRewardGiver.utils.colors.Colors;
@@ -29,6 +30,9 @@ public final class Main extends JavaPlugin {
         configManager = new ConfigManager(plugin);
         errors = new Errors(plugin);
         modules = new ModuleManager(plugin);
+
+        getCommand("rewardsadmin").setExecutor(new AdminCommand(plugin));
+        getCommand("rewardsadmin").setTabCompleter(new AdminCommand(plugin));
 
         log.stamp();
         log.success("Plugin attivato correttamente.");

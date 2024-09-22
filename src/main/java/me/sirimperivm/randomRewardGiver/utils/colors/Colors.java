@@ -15,4 +15,8 @@ public class Colors {
     public String translatedString(String t) {
         return ColorAPI.colorize(t);
     }
+
+    public static String translateString(String t) {
+        return ColorAPI.colorize(t);
+    }
 }
