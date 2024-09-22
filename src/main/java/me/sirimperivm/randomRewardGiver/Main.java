@@ -2,6 +2,7 @@ package me.sirimperivm.randomRewardGiver;
 
 import me.sirimperivm.randomRewardGiver.utils.ConfigManager;
 import me.sirimperivm.randomRewardGiver.utils.colors.Colors;
+import me.sirimperivm.randomRewardGiver.utils.others.Errors;
 import me.sirimperivm.randomRewardGiver.utils.others.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ public final class Main extends JavaPlugin {
     private Colors colors;
     private Logger log;
     private ConfigManager configManager;
+    private Errors errors;
 
     @Override
     public void onEnable() {
@@ -23,6 +25,7 @@ public final class Main extends JavaPlugin {
         colors = new Colors(plugin);
         log = new Logger(plugin, "RandomRewardGiver");
         configManager = new ConfigManager(plugin);
+        errors = new Errors(plugin);
 
         log.stamp();
         log.success("Plugin attivato correttamente.");
@@ -52,5 +55,9 @@ public final class Main extends JavaPlugin {
 
     public ConfigManager getConfigManager() {
         return configManager;
+    }
+
+    public Errors getErrors() {
+        return errors;
     }
 }

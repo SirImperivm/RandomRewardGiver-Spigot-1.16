@@ -112,6 +112,7 @@ public class ConfigManager {
     }
 
     public String getTranslatedString(FileConfiguration c, String p) {
-        return colors.translatedString(c.getString(p));
+        String prefix = colors.translatedString(getMessages().getString("default-prefix", "&5&lFusion&6&lRewards &8» &7"));
+        return colors.translatedString(c.getString(p).replace("%p", prefix));
     }
 }
