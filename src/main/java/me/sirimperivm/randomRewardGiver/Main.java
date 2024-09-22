@@ -1,6 +1,7 @@
 package me.sirimperivm.randomRewardGiver;
 
 import me.sirimperivm.randomRewardGiver.utils.ConfigManager;
+import me.sirimperivm.randomRewardGiver.utils.ModuleManager;
 import me.sirimperivm.randomRewardGiver.utils.colors.Colors;
 import me.sirimperivm.randomRewardGiver.utils.others.Errors;
 import me.sirimperivm.randomRewardGiver.utils.others.Logger;
@@ -16,6 +17,7 @@ public final class Main extends JavaPlugin {
     private Logger log;
     private ConfigManager configManager;
     private Errors errors;
+    private ModuleManager modules;
 
     @Override
     public void onEnable() {
@@ -26,6 +28,7 @@ public final class Main extends JavaPlugin {
         log = new Logger(plugin, "RandomRewardGiver");
         configManager = new ConfigManager(plugin);
         errors = new Errors(plugin);
+        modules = new ModuleManager(plugin);
 
         log.stamp();
         log.success("Plugin attivato correttamente.");
@@ -59,5 +62,9 @@ public final class Main extends JavaPlugin {
 
     public Errors getErrors() {
         return errors;
+    }
+
+    public ModuleManager getModules() {
+        return modules;
     }
 }
