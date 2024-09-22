@@ -65,7 +65,7 @@ public class RewardsPack {
                     return;
                 }
                 if (type.equalsIgnoreCase("normal")) {
-                    itemPath = rewardPath + ".items.normal";
+                    itemPath = rewardPath + ".items." + itemSection + ".normal";
                     String materialName = configManager.getRewards().getString(itemPath + ".material");
                     Material material = Material.getMaterial(materialName);
                     int amount = configManager.getRewards().getInt(itemPath + ".amount", 1);
@@ -98,7 +98,7 @@ public class RewardsPack {
                     is.setItemMeta(meta);
                     rewardItems.add(is);
                 } else {
-                    itemPath = rewardPath + ".items.potion";
+                    itemPath = rewardPath + ".items." + itemSection + ".potion";
                     String potionType = configManager.getRewards().getString(itemPath + ".type", "normal");
                     String materialName = null;
                     switch (potionType) {
