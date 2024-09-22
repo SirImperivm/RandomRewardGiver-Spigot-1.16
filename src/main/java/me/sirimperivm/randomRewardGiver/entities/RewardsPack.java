@@ -84,7 +84,7 @@ public class RewardsPack {
                         String enchPath = itemPath + ".enchantments." + enchTag;
                         String enchantName = configManager.getRewards().getString(enchPath + ".name");
                         int enchantLevel = configManager.getRewards().getInt(enchPath + ".level");
-                        enchantLevel = enchantLevel > 0 ? enchantLevel-1 : 0;
+                        enchantLevel = enchantLevel >= 0 ? enchantLevel : 0;
                         Enchantment enchantment = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(enchantName.toLowerCase()));
                         if (enchantment != null) {
                             meta.addEnchant(enchantment, enchantLevel, true);
@@ -121,7 +121,7 @@ public class RewardsPack {
                         String effectPath = itemPath + ".potion-effects." + effectTag;
                         String effectName = configManager.getRewards().getString(effectPath + ".id");
                         int effectLevel = configManager.getRewards().getInt(effectPath + ".level", 1);
-                        effectLevel = effectLevel > 0 ? effectLevel-1 : 0;
+                        effectLevel = effectLevel >= 0 ? effectLevel : 0;
                         int duration = configManager.getRewards().getInt(effectPath + ".duration", 5);
                         PotionEffectType effectType = Registry.EFFECT.get(NamespacedKey.minecraft(effectName.toLowerCase()));
                         if (effectType != null) {
