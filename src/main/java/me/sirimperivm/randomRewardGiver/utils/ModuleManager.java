@@ -37,6 +37,7 @@ public class ModuleManager {
             rewardsPack.resetSize();
             rewardsPack.resetRewards();
             rewardsPacks.add(rewardsPack);
+            log.success("Registrato rewardPack: " + rewardPackSection + "!");
         }
     }
 

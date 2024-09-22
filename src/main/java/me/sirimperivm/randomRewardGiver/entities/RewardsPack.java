@@ -78,19 +78,32 @@ public class RewardsPack {
                 Logger.staticFail("Nel pack " + packIdentifier + " non ci sono premi validi.");
             } else {
                 String inventoryFullMessage = configManager.getTranslatedString(configManager.getMessages(), "inventory-full");
-                Reward lastReward = null;
-                Random rand = new Random();
-                Reward reward = rewards.get(rand.nextInt(rewards.size()));
-                do {
-                    reward = rewards.get(rand.nextInt(rewards.size()));
-                } while (lastReward.equals(reward));
+                if (rewards.size() == 1) {
+                    Reward reward = rewards.get(0);
+                    reward.giveToPlayer(p, inventoryFullMessage);
+                } else {
+                    Reward lastReward = null;
+                    Random rand = new Random();
+                    Reward reward = rewards.get(rand.nextInt(rewards.size()));
+                    do {
+                        reward = rewards.get(rand.nextInt(rewards.size()));
+                    } while (lastReward.equals(reward));
 
-                reward.giveToPlayer(p, inventoryFullMessage);
+                    reward.giveToPlayer(p, inventoryFullMessage);
+                }
             }
         }
     }
 
     public List<Reward> getRewards() {
         return rewards;
+    }
+
+    public String getPackIdentifier() {
+        return packIdentifier;
+    }
+
+    public String getPackTitle() {
+        return packTitle;
     }
 }
