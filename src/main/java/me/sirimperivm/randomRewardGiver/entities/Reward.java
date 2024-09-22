@@ -1,7 +1,6 @@
 package me.sirimperivm.randomRewardGiver.entities;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -57,28 +56,45 @@ public class Reward {
 
     public void giveToPlayer(Player p, String inventoryFullMessage) {
         String playerName = p.getName();
+
         for (String command : commands) {
             command = command.replace("%player%", playerName);
             Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
         }
 
+        boolean inventoryFull = false;
+
         for (ItemStack is : items) {
             if (hasntSpace(p, is)) {
-                p.sendMessage(inventoryFullMessage);
+                inventoryFull = true;
                 p.getWorld().dropItem(p.getLocation(), is);
             } else {
                 p.getInventory().addItem(is);
             }
         }
+
+        if (inventoryFull) {
+            p.sendMessage(inventoryFullMessage);
+        }
     }
+
 
     private boolean hasntSpace(Player p, ItemStack is) {
         Inventory inv = p.getInventory();
-        int size = inv.getSize();
-        for (int i=0; i<size; i++) {
-            if (inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR || (inv.getItem(i).equals(is) && inv.getItem(i).getAmount() != inv.getItem(i).getMaxStackSize() && ((inv.getItem(i).getAmount() + is.getAmount()) > inv.getItem(i).getMaxStackSize())))
-                return false;
+
+        if (inv.firstEmpty() != -1) {
+            return false;
         }
+
+        for (ItemStack item : inv.getContents()) {
+            if (item != null && item.isSimilar(is)) {
+                int maxStackSize = is.getMaxStackSize();
+                if (item.getAmount() < maxStackSize) {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 }
